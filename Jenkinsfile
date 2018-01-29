@@ -16,16 +16,17 @@ node ()
         
     }
     stage ('K2-Zday-agent - Build') {
-        echo env.PATH
-        echo env.BUILD_NUMBER
-        echo env.WORKSPACE
-        withEnv(['GOPATH=env.WORKSPACE', 'PATH=env.PATH+\'/usr/local/go/bin\'', 'GOBIN=env.GOPATH+"/"+env.BUILD_NUMBER', 'image_name="k2cyber/rel-k2-zday-agent:"env.BUILD_NUMBER"'])
-        {
-        echo env.image_name
-        echo env.GOPATH
-        echo env.WORKSPACE
-        echo BUILD_NUMBER
-	}
-    }
+       sh """
+       GOPATH='${env.WORKSPACE}'
+       PATH='${env.PATH};/usr/local/bin/go'
+       GOBIN='${env.GOPATH}/${env.BUILD_NUMBER}'
+       image_name="k2cyber/rel-k2-zday-agent:${env.BUILD_NUMBER}"
+       cd ${env.WORKSPACE}
+       cp src/github.com/k2io/k2-agent/zdayserver/Dockerfile.ubuntu ${env.WORKSPACE}/Dockerfile
+       docker build -t ${env.image_name} .
+       docker push ${env.image_name}
+       docker rmi ${env.image_name}
+       """
+      }
     }
 }
