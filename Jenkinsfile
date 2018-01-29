@@ -4,7 +4,7 @@ properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', 
 
 node () 
     {
-    def repo = ["k2io/k2-agent", "k2io/k2-useragent-docker", "k2io/go-iptables", "emicklei/go-restful", "puerkitobio/purell", "golang/glog", "go-openapi/spec", "google/gofuzz", "bronze1man/goStrongswanVici", "docker/docker", "mailru/easyjson"]
+    def repo = ["k2io/k2-agent", "k2io/k2-useragent-docker", "k2io/go-iptables", "emicklei/go-restful", "puerkitobio/purell", "golang/glog", "go-openapi/spec", "google/gofuzz", "bronze1man/goStrongswanVici", "docker/docker", "mailru/easyjson", "golang.org/x/sys/unix"]
     for (item in repo){
     stage ('Checkout '+item) 
         {
@@ -12,8 +12,17 @@ node ()
           {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], userRemoteConfigs: [[ credentialsId: '07', url: 'https://spinnaker07@github.com/'+item+'.git']]])
 	 }
-        }
-        
+      }
+    }
+    def repo2 = ["golang.org/x/sys/unix", "k8s.io/client-go"]
+    stage ('Checkout '+item) 
+    {
+    for (item in repo2){
+          dir("src/"+item) 
+          {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], userRemoteConfigs: [[ credentialsId: '07', url: 'https://'+item+'.git']]])
+	 }
+        }    
     }
     stage ('K2-Zday-agent - Build') {
        sh """
@@ -28,5 +37,5 @@ node ()
        docker rmi ${env.image_name}
        """
       }
-    }
+   }
 }
