@@ -15,15 +15,14 @@ node ()
     }
     stage ('K2-Zday-agent - Build') {
         echo env.PATH
-        echo env.BUILD_NUMBER
+        echo env.BUILD_NUMBE:
         echo env.WORKSPACE
-        withEnv(GOPATH=env.WORKSPACE, PATH=env.PATH+'/usr/local/go/bin', GOBIN=env.GOPATH+"/"+env.BUILD_NUMBER)
+        withEnv(['GOPATH=${WORKSPACE}', 'PATH=env.PATH+\'/usr/local/go/bin\'', 'GOBIN=env.GOPATH+"/"+${BUILD_NUMBER}', 'image_name="k2cyber/rel-k2-zday-agent:"+${BUILD_NUMBER}"'])
         {
-	def image_name="k2cyber/rel-k2-zday-agent:"env.BUILD_NUMBER
-        echo image_name
+        echo env.image_name
         echo env.GOPATH
         echo env.WORKSPACE
-        echo env.BUILD_NUMBER 
+        echo ${BUILD_NUMBER}
         sh 
         """	
        cd ${WORKSPACE}
