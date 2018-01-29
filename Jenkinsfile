@@ -2,7 +2,7 @@ timestamps
 {
 node () 
     {
-    properties [[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', daysToKeepStr: '2', numToKeepStr: '2']], [$class: 'ScannerJobProperty', doNotScan: false]]
+    properties([[$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', daysToKeepStr: '2', numToKeepStr: '2']], [$class: 'ScannerJobProperty', doNotScan: false]])
     def repo = ["k2io/k2-agent", "k2io/k2-useragent-docker", "k2io/go-iptables", "emicklei/go-restful", "puerkitobio/purell", "golang/glog", "go-openapi/spec", "google/gofuzz", "bronze1man/goStrongswanVici", "docker/docker", "mailru/easyjson"]
     for (item in repo){
     stage ('Checkout '+item) 
