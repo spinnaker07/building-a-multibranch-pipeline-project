@@ -17,7 +17,7 @@ node ()
         echo env.PATH
         echo env.BUILD_NUMBER
         echo env.WORKSPACE
-        withEnv(['GOPATH=${WORKSPACE}', 'PATH=env.PATH+\'/usr/local/go/bin\'', 'GOBIN=env.GOPATH+"/"+${BUILD_NUMBER}', 'image_name="k2cyber/rel-k2-zday-agent:"+${BUILD_NUMBER}"'])
+        withEnv(['GOPATH=env.WORKSPACE', 'PATH=env.PATH+\'/usr/local/go/bin\'', 'GOBIN=env.GOPATH+"/"+env.BUILD_NUMBER', 'image_name="k2cyber/rel-k2-zday-agent:"env.BUILD_NUMBER"'])
         {
         echo env.image_name
         echo env.GOPATH
