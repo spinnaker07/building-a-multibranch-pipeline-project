@@ -4,7 +4,7 @@ node ()
     {
     stage ('K2-Zday-agent - Checkout') 
         { 
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], userRemoteConfigs: [[url: 'git@github.com:k2io/k2-agent.git']]])
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], userRemoteConfigs: [[ credentialsId: '07', url: 'git@github.com:k2io/k2-agent.git']]])
 	}
     stage ('K2-Zday-agent - Build') {
     // Shell build step
