@@ -3,9 +3,12 @@ timestamps
 node () 
     {
     stage ('K2-Zday-agent - Checkout') 
-        { 
+        {
+         dir("src/github.com/k2-agent") 
+          {
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'CleanCheckout']], userRemoteConfigs: [[ credentialsId: '07', url: 'https://spinnaker07@github.com/k2io/k2-agent.git']]])
-	}
+	 }
+        }
     stage ('K2-Zday-agent - Build') {
     // Shell build step
 	sh """ 
